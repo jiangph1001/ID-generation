@@ -10,6 +10,7 @@ def get_lastnumber(id):
     weight=[7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2]
     if len(weight) != len(id):
         print("计算最后一位时出错!")
+        print(id)
         return 0
     sum = 0
     for i in range(len(weight)):
@@ -47,21 +48,39 @@ def get_prefix_by_provice(province):
     return get_prefix(3,province)
 
 def get_prefix_by_area(area):
-    return get_prefix(1,area)
+    area_list = get_prefix(1,area)
+    num = "0";
+    if len(area_list) > 1:
+        cnt = 1
+        print(area+"有多个选项，你想要哪个？")
+        for area_num in area_list:
+            city_name = get_prefix(0,area_num[:4],1)[0]
+            print("["+str(cnt)+"]: "+area_num+","+city_name+area)
+            cnt = cnt + 1
+        num = input("请输入要选择的编号，0表示全都要：")
+    if int(num) == 0:
+        return area_list
+    else:
+        single_list = []
+        single_list.append(area_list[int(num)-1])
+        return single_list
 
 def get_prefix_by_city(city):
     num = get_prefix(1,city)
     return get_prefix(0,num[0][:4])
 
 # 获取前缀
-def get_prefix(mode,arg_str):
+# mode 按第几列查询
+# arg_str 查询的参数
+# loc 返回第几列的结果
+def get_prefix(mode,arg_str,loc=0):
     file_name = "prefix.csv"
     prefix6 = []
     with open(file_name,'r') as fd:
         csv_reader = csv.reader(fd)
         for row in csv_reader:
             if arg_str in row[mode]:
-                prefix6.append(row[0])
+                prefix6.append(row[loc])
     return prefix6
 
 # 获取所有的生日字符串
