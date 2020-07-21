@@ -103,23 +103,10 @@ def get_all_birthday(date_str):
         birthday.append(get_birthday_str(dt))
     return birthday
 
-
-if __name__ == "__main__":
-
-    gender_dict = {"女":"02468","男":"13579"} # female：0  male:1
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-g","--gender",default = "男",help="性别，女或男")
-    parser.add_argument("-o","--output",help="输出到文件")
-    parser.add_argument("-d","--date",default="1970/01/01",help="出生日期（年/月/日）,例：1970/1/1。范围:1970/01/01-1998/02/02")
-    # parser.add_argument("-r","--random",help="三位随机码")
-    parser.add_argument("-p","--province",default='北京市',help="出生地址精确到省/直辖市")
-    parser.add_argument("-c","--city",help="出生地址精确到地级市")
-    parser.add_argument("-a","--area",help="出生地址精确到县级市")
-    args = parser.parse_args()
-
+gender_dict = {"女":"02468","男":"13579"} 
+def generate_id(args):
     gender = args.gender
     birthday = get_all_birthday(args.date)
-    
     if args.area:
         prefix6 = get_prefix_by_area(args.area)
     elif args.city:
@@ -142,3 +129,20 @@ if __name__ == "__main__":
                         print(id)
     if args.output:
         fd.close()
+    
+
+if __name__ == "__main__":
+
+# female：0  male:1
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-g","--gender",default = "男",help="性别，女或男")
+    parser.add_argument("-o","--output",help="输出到文件")
+    parser.add_argument("-d","--date",default="1970/01/01",help="出生日期（年/月/日）,例：1970/1/1。范围:1970/01/01-1998/02/02")
+    # parser.add_argument("-r","--random",help="三位随机码")
+    parser.add_argument("-p","--province",default='北京市',help="出生地址精确到省/直辖市")
+    parser.add_argument("-c","--city",help="出生地址精确到地级市")
+    parser.add_argument("-a","--area",help="出生地址精确到县级市")
+    args = parser.parse_args()
+    #print(args)
+    generate_id(args)
+    
